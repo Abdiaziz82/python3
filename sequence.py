@@ -53,7 +53,7 @@ numbers.pop()
 print(numbers)
 
 # SETS
-# Sets store unordered, mutable group of values (not indexed)
+# Sets store unordered, immutable group of values (not indexed)
 # Sets don't allow duplicates
 # Note: The comment saying sets are "indexed" is incorrect; sets are unordered and not indexed
 

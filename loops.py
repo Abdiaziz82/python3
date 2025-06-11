@@ -1,206 +1,118 @@
-# # # # user_input = int(input("Enter the number you want to multiply with:"))
-# # # # i = 10
-# # # # while i > 0:
-# # # #     result = user_input * i
-# # # #     print(f"{user_input} * {i} = {result}")
-# # # #     i -= 1
-
-# # # # j = 0
-# # # # while j <= 5:
-# # # #     print("hello")
-# # # #     if j == 3:
-# # # #         break
-# # # #     j += 1
+#while loops
+i = 1
+while i <= 10:
+    print(i)
+    i= i+1
+     #increment
     
-# # # # i = 0
-# # # # while i <= 10:
-# # # #     if i % 2 == 0:
-# # # #         i+=1
-# # # #         continue
-# # # #     print(i)
-# # # #     i += 1
+j = 10
+while j >= 1:
+    print(j)
+    j-=1
     
+#multiplication table
+number = int(input("Enter a number: "))
+
+multiply_by = 1
+while multiply_by <= 10:
+    product = number * multiply_by
+    print(f"{number} * {multiply_by} = {product}")
+    multiply_by += 1 # Increase multiply_by by 1 1 for the next iteration
+
+#for loop
+
+name = "abdullahi"
+for letter in name: # Loop through each letter in the name
+    print(letter)
+
+student_names = ["abdi" ,"abdullahi", "yussuf"]
+for name in student_names:
+    print(name)
+
+for num in range(1,6):
+    print(num)
     
-# # # j = 5 
-# # # while j >= 0:
-# # #     if j == 3:
-# # #         j -=1
-# # #         continue
-# # #     else :
-# # #         print(j)
-# # #         j -= 1
-
-# # # i = 0
-# # # while i <= 5:
-# # #     if i % 2 != 0:
-# # #         i+=1
-# # #         continue
-# # #     print(i)
-# # #     i+=1
-    
-# # # word = ""
-
-# # # while word != "quit":
-# # #     word = input("Enter a word: ")
-# # #     if word != "quit":
-# # #         print(f"You typed {word}")
-# # #     else:
-# # #         print("Goodbye")
-
-# i = 1
-# while i <= 3:
-#     print("table of", i)
-#     j = 1
-#     while j <= 3:
-#         total = i * j
-#         print(f"{i} * {j} = {total}") 
-#         j += 1
-#     print("---")
-#     i += 1
-     
-     
-    
-# # students = ["abdullahi", "halima", "ahmed", "faiza", "abdiaziz"]
-# # for student in students:
-# #     print(student)
-
-
-# # highest_score = 0
-# # student_scores = [12,45,59,80,90] 
-# # for score in student_scores:
-# #     if score > highest_score:
-# #         highest_score = score
-# # print(f"The highest score is {highest_score}")  
-
-
-# # total = 0 
-# # for number in range(1,101):
-# #     total += number
-# # print(f"The total is {total}"  )
-
-# # scores = [20,30,50]
-# # #Print highest score using max
-# # print(max(scores))
-
-# # for i in range(7):
-# #     print(i , end=" ")
- 
-# # name = "abdi"
-# # for letter in name:
-# #     if letter == "b":
-# #         continue
-# #     else:
-# #         print(letter)
-
-# # numbers = [1,2,3,4]
-# # for num in numbers:
-# #     if num == 3:
-# #         break
-# #     print(num)
-
-# total = 0
-# for n in range(1,101):
-#     total += n
-# print(f"The total is {total}")
-
-# highest_score = 0
-# runner_up = 0
-# scores =[97,12,34,54,90]
-# for score in scores:
-#     if score > highest_score: 
-#         runner_up = highest_score
-#         highest_score = score
-#     elif score > runner_up :
-#         runner_up = score
-# print(f"The highest score is {highest_score}")
-# print(f"the runner up is {runner_up}")
-
-
-# for row in range(1,5):
-#     for col in range(6):
-#         print("*" ,end=" ")
-#     print()
-
-# students = ["abdi", "ali" , "abdullahi" ,"aisha"]
-# for classes in range(4):
-#     print(f"------class------------ {classes}")
-#     for student in students:
-#         print(student ,end=" " )
-#     print()
-    
-    
-
-# for num in range(1,6):
-#     print(f"table of {num}")
-#     for i in range(1,5):
-#         total = num * i
-#         print(f"{num} * {i} = {total}")
-#     print("-------------------------")
-    
-# for j in range(1,3):
-    
-#     for n in range(1,3):
-#         print("i'm the inner")
-#     print()
-
-
-# numbers = [1,2,3,4 , 6, 8]
-# new_numbers = []
-# filtered_numbers =[]
-
-# for num in numbers:
-#     # new_numbers.append(num **2)
-#     if num % 2 == 0:
-#         filtered_numbers.append(num **2)
-# # print(new_numbers)
-# print(filtered_numbers)
-
-# my_numbers = [20,35,40]
-# filtered = [num **2 for num in my_numbers if num % 2 == 0]
-# print(my_numbers)
-
-# names = ["abdi","ali" ,"najm"]
-# result = []
-# for name in names:
-#     if name[0] == "a":
-#         result.append(name.upper())
-# print(result)
-
-# resul = [name.upper() for name in names if name.startswith("a")]
-# print(resul)
-# email_address = []
-# for name in names:
-#     email = name + "@gmail.com"
-#     email_address.append(email)
-# print(email_address)
-
-name = "abdi"
-nami = [name.upper() for name in name]
-print(nami)
-
-names = ["abdi","ali" ,"najm"]
-email = [name + "@gmail.com" for name in names]
-print(email)
-
-scores = [12,20,30,40,40,10,3,4]
-results = []
-for score in scores:
-    if score > 20:
-        results.append("pass")
+#break in loops
+word = ""
+while word != "exit":
+    word = input("Enter something:  ")
+    if word == "exit":
+        break
     else:
-        results.append("fail")
-print(results)
+        print(f"you typed : {word}")
+        
+#continue
+for num in range(1,11):
+    if num % 2 == 0:
+        continue
+    print(num)
 
-results = ["pass" if score > 30 else "fail" for score in scores]
-print(results)
+total = 0
+for i in range(1,101):
+    total+=i  
+print(total)
 
-usd_prices = [100,200,300]
-ksh_prices = []
+student_scores = [70,30,50,60,30]
+highest_score = 0
+runner_up = 0
+for score in student_scores:
+    if score > highest_score:
+        runner_up = highest_score
+        highest_score = score
+    elif score > runner_up:
+        runner_up = score
+print(f"the highest score is ,{highest_score}")
+print(f"the second person is {runner_up}")
 
-for price in usd_prices:
-    ksh_price = price * 100
-    ksh_prices.append(ksh_price)
-print(ksh_prices)
+#nested_loop
 
-ksh_prices = [price * 100 for price in usd_prices]
-print(ksh_prices)
+#outerloop
+outer_loop = 1
+while outer_loop <= 3:
+    print(f"this is the {outer_loop} iteration of the outer loop")
+    inner_loop = 1
+    while inner_loop <= 4:
+        product = outer_loop * inner_loop
+        print(f"{outer_loop} * {inner_loop} = {product}")
+        inner_loop +=1
+    outer_loop +=1
+    print("---------------")
+    
+
+
+numbers = [1,2,3,4,5]
+modified_numbers = []
+filtered_numbers = []
+for num in numbers:
+    if num % 2 == 0:
+        result = num ** 2
+        modified_numbers.append(result)
+print(modified_numbers) 
+    
+#list_comprehension
+squared_numbers =[num ** 2 for num in numbers if num % 2 == 0]
+print(squared_numbers)
+
+students = ["ahmed" ,"ridwan" ,"abdullahi" ,"abdiaziz"]
+email_address = []
+for student in students:
+    web_mail = student + "@oasis.ac.ke"
+    email_address.append(web_mail)
+print(email_address)
+
+email_address = [student + "@oasis.gau.ac.ke" for student in students]
+print(email_address)
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+    

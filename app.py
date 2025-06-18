@@ -21,3 +21,5 @@ while True:
         break
     reply = chat_with_gpt(user_input)
     print("Bot:", reply)
+
+

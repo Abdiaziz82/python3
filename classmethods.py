@@ -3,7 +3,7 @@ class Student:
     university_name = "Garissa university"
     #track the total number of students
     all_students = []
-    total_students = 0
+    total_students = 0 
     
     def __init__(self,name,age,email,grade,is_present):
         self.name = name
@@ -38,17 +38,22 @@ class Student:
     
     def disp_student_name(self):
         return f"{self.name}"
-        
-s1 = Student("abdiaziz" , 20 ,"abdiazizgmail.com" , "A" , True)
-s2 = Student("Hima" , 20 ,"halima@gmail.com" , "B" , True)
-s3 = Student("lima" , 20 ,"halima@gmail.com" , "B" , True)
-s4 = Student("Haa" , 20 ,"halima@gmail.com" , "B" , True)
-s5 = Student("ma" , 20 ,"halima@gmail.com" , "B" , True)
-print(Student.university_name)
-s1.university_name = "University of Nairobi"
-print(s1.university_name)
-print(Student.change_university("MKU"))
-print(Student.university_name)
-print(s1.change_university("GAU"))
-print(Student.get_student())
-print(Student.show_all_students())    
+   
+if __name__ == "__main__": 
+    print(f"the classmethods.py module name {__name__}") 
+    
+    s1 = Student("abdiaziz" , 20 ,"abdiazizgmail.com" , "A" , True)
+    s2 = Student("Hima" , 20 ,"halima@gmail.com" , "B" , True)
+    s3 = Student("lima" , 20 ,"halima@gmail.com" , "B" , True)
+    s4 = Student("Haa" , 20 ,"halima@gmail.com" , "B" , True)
+    s5 = Student("ma" , 20 ,"halima@gmail.com" , "B" , True)
+    
+    print(Student.university_name)
+    s1.university_name = "University of Nairobi"
+    
+    print(s1.university_name)
+    print(Student.change_university("MKU"))
+    print(Student.university_name)
+    print(s1.change_university("GAU"))
+    print(Student.get_student())
+    print(Student.show_all_students())    

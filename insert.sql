@@ -1,0 +1,2 @@
+INSERT INTO users(name,age ,email_address,year, course) VALUES("abdi", "twenty" ,"abd@gmail.com",2025, "informationscience");
+INSERT INTO users(name,age ,email_address,year, course) VALUES("abdi", "twenty" ,"abdi@gmail.com",2025, "informationscience");

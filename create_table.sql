@@ -1,0 +1,8 @@
+CREATE TABLE users(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT,
+age INTEGER,
+email_address TEXT UNIQUE,
+year INTEGER,
+course TEXT
+);

@@ -22,7 +22,6 @@ class Student:
     @classmethod
     def get_student(cls):
         return cls.total_students
-
     @classmethod
     #print all the object names
     def show_all_students(cls):

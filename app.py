@@ -1,25 +1,26 @@
-import os
-from openai import OpenAI
+from flask import Flask
 
-# Set your API key here
-client = OpenAI(api_key="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")  # your key
+app = Flask(__name__)
 
-def chat_with_gpt(prompt):
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ]
-    )
-    return response.choices[0].message.content
+@app.route('/')
+def home():
+    return "My first Time learning Flask"
 
-# Test chatbot
-while True:
-    user_input = input("You: ")
-    if user_input.lower() == "exit":
-        break
-    reply = chat_with_gpt(user_input)
-    print("Bot:", reply)
+@app.route('/about')
+def about_page():
+    return "this is the about page"
 
+@app.route('/about/home')
+def about_home():
+    return "this is the about on home page"
 
+@app.route('/<string:name>')
+def user_profile(name):
+    return f"Welcome {name}"
+
+@app.route('/courses/<int:course_id>')
+def course_details(course_id):
+    return f"welcome to the modules {course_id}"
+
+if __name__ == "__main__":
+    app.run(port = 5002, debug = True)

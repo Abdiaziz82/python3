@@ -1,16 +1,7 @@
 from flask import Flask,request,current_app,make_response, jsonify, render_template
 # Create Flask app instance
-from models import db,Student
-from flask_migrate import Migrate
 app = Flask(__name__) 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_hello.db'
-migrate = Migrate(app, db)
-db.init_app(app)
 
-with app.app_context():
-    student_1 = Student( name="abdiaziz", course="IT")
-    db.session.add(student_1)
-    db.session.commit()
 # Simulate request context for testing
 # because request object becomes available
 # only when a request is made

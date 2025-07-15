@@ -22,4 +22,25 @@
 #     reply = chat_with_gpt(user_input)
 #     print("Bot:", reply)
 
+import fitz  # PyMuPDF
+from PIL import Image
+from pyzbar.pyzbar import decode
+
+# Open PDF
+doc = fitz.open("your_file.pdf")
+page = doc.load_page(0)
+pix = page.get_pixmap()
+pix.save("page.png")
+
+# Scan barcode
+img = Image.open("WhatsApp Image 2025-07-14 at 14.19.30")
+results = decode(img)
+for result in results:
+    print("Type:", result.type)
+    print("Data:", result.data.decode("utf-8"))
+
+
+
+
+
 

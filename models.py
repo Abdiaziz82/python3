@@ -23,6 +23,7 @@ class Student(db.Model):
     
     payment = db.relationship('Payment_history',backref = 'student')
     
+
     def __repr__(self):
         return f"< Student {self.full_name} >"
     

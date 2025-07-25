@@ -37,7 +37,6 @@ def post_student():
         "course" : new_student.course,
         "department" : new_student.department
     }
-    
     return(jsonify(student_dict), 201)
 
 @app.route('/delete_student/<int:student_id>' , methods =['DELETE'])
@@ -48,12 +47,32 @@ def delete_student(student_id):
     db.session.delete(student)
     db.session.commit()
     return(jsonify({"message" :"student deleted successfully"}), 200)
-    
-    
-    
 
-
-
+@app.route('/update_student/<int:student_id>', methods = ['PUT'])
+def update_student(student_id):
+    data = request.get_json()
+    student = Student.query.filter(Student.id == student_id).first()
+    if not student:
+        return(jsonify({"error" : "no student found with this id "}))
+    
+    student.full_name = data.get("fullName" ,s tudent.full_name)
+    student.reg_number = data.get("regNumber" ,student.reg_number)
+    student.email = data.get("emailAddress" ,student.email)    
+    student.school = data.get("school" ,student.school)
+    student.course = data.get("course" , student.course)
+    student.department = data.get("department" , student.department)
+    
+    db.session.commit()
+    student_dict = {
+    "id" :student.id,
+    "full_name" :student.full_name,
+    "reg_number" :student.reg_number,
+    "email" : student.email,
+    "school" :student.school,
+    "course" :student.course,
+    "department" :student.department
+    }
+    return(jsonify(student_dict))
 
 
 

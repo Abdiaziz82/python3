@@ -1,7 +1,8 @@
-from flask import Flask ,jsonify ,make_response ,request
+from flask import Flask ,jsonify ,make_response ,request ,session
 from flask_migrate import Migrate
 from models import db , Student ,Payment_history
 from flask_cors import CORS
+from flask_restful import Resource,Api
 
 app = Flask(__name__)
 # Database configuration - SQLite for development
@@ -11,12 +12,67 @@ CORS(app)
 # Initialize migration support
 migrate = Migrate(app,db)
 db.init_app(app)
+api = Api(app)
 
-@app.route('/post_student', methods=['POST'])
-def post_student():
-    data = request.get_json()
+
+app.secret_key = 'your_secret_key'
+
+@app.route('/set_name/<name>/<age>')
+def set_name(name,age):
+    session['user_name'] = name
+    session['user_age'] = age
     
-    new_student = Student(
+    response = make_response(jsonify({
+        'message':f'data saved for {name} and {age}',
+        'where_stored':{
+            'session' : f"user_name={name} and user_age={age}",
+            "cookie":"preferene=darktheme"
+        }
+    }))
+    response.set_cookie("preferene","darktheme")
+    return response
+
+
+@app.route('/get_name')
+def get_name():
+    session_name = session.get('user_name')
+    session_age = session.get('user_age')
+    cookie_preference = request.cookies.get('preferene')
+    
+    return jsonify({
+        'from_session':{
+            'user_name':session_name,
+            'user_age':session_age,
+            'explanation': 'from session'
+        } ,
+        'from_cookie':{
+            'user_preference':cookie_preference,
+            'explanation': 'from cookie'
+        },
+        'all_cookies' :dict(request.cookies)
+    }
+        
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class StudentResource(Resource):
+    def post(self):
+        data = request.get_json()
+    
+        new_student = Student(
         full_name = data.get('fullName'),
         reg_number = data.get('regNumber'),
         email = data.get('emailAddress'),
@@ -25,19 +81,91 @@ def post_student():
         department = data.get('department'),   
     )
     
-    db.session.add(new_student)
-    db.session.commit()
+        db.session.add(new_student)
+        db.session.commit()
     
-    student_dict = {
-        "id" : new_student.id,
-        "full_name" : new_student.full_name,
-        "reg_number" :new_student.reg_number,
-        "email" : new_student.email,
-        "school" : new_student.school,
-        "course" : new_student.course,
-        "department" : new_student.department
+        student_dict = new_student.to_dict()
+        return(student_dict, 201)
+    
+    def get(self):
+        all_students = []
+        for student in Student.query.all():
+            students_dict = {
+            "id" :student.id,
+            "full_name" : student.full_name,
+            "email" : student.email,
+            "reg_number" : student.reg_number,
+            "course" : student.course,
+            "school" : student.school,
+            "department" : student.department
+        }
+            all_students.append(students_dict)
+            
+        return (all_students)
+
+     
+
+api.add_resource(StudentResource ,'/students','/students/<int:student_id>')
+
+
+class get_student_resource(Resource):
+    def get(self,student_id):
+            
+        student = Student.query.filter(Student.id == student_id).first()
+        if not student:
+            return({"error" : "no student in the database with this id"}, 404)
+        student_dict = {
+            "id" :student.id,
+            "full_name" : student.full_name,
+            "email" : student.email,
+            "reg_number" : student.reg_number,
+            "course" : student.course,
+             "school" : student.school,
+            "department" : student.department
     }
-    return(jsonify(student_dict), 201)
+    
+        return(student_dict)
+    
+    def delete(self,student_id):
+        student = Student.query.filter(Student.id == student_id).first()
+        if not student:
+            return(jsonify({"error" : "there is no student with this id in the database"}), 404)
+        db.session.delete(student)
+        db.session.commit()
+        return(jsonify({"message" :"student deleted successfully"}), 200)
+    
+api.add_resource(get_student_resource,'/student/<int:student_id>')
+
+
+
+
+
+# @app.route('/post_student', methods=['POST'])
+# def post_student():
+#     data = request.get_json()
+    
+#     new_student = Student(
+#         full_name = data.get('fullName'),
+#         reg_number = data.get('regNumber'),
+#         email = data.get('emailAddress'),
+#         school = data.get('school'),
+#         course = data.get('course'),
+#         department = data.get('department'),   
+#     )
+    
+#     db.session.add(new_student)
+#     db.session.commit()
+    
+#     student_dict = {
+#         "id" : new_student.id,
+#         "full_name" : new_student.full_name,
+#         "reg_number" :new_student.reg_number,
+#         "email" : new_student.email,
+#         "school" : new_student.school,
+#         "course" : new_student.course,
+#         "department" : new_student.department
+#     }
+#     return(jsonify(student_dict), 201)
 
 @app.route('/delete_student/<int:student_id>' , methods =['DELETE'])
 def delete_student(student_id):
@@ -55,7 +183,7 @@ def update_student(student_id):
     if not student:
         return(jsonify({"error" : "no student found with this id "}))
     
-    student.full_name = data.get("fullName" ,s tudent.full_name)
+    student.full_name = data.get("fullName" ,student.full_name)
     student.reg_number = data.get("regNumber" ,student.reg_number)
     student.email = data.get("emailAddress" ,student.email)    
     student.school = data.get("school" ,student.school)
@@ -77,38 +205,38 @@ def update_student(student_id):
 
 
 
-@app.route('/students' ,methods = ['GET'] )
-def get_student():
-    all_students = []
-    for student in Student.query.all():
-        students_dict = {
-            "id" :student.id,
-            "full_name" : student.full_name,
-            "email" : student.email,
-            "reg_number" : student.reg_number,
-            "course" : student.course,
-            "school" : student.school,
-            "department" : student.department
-        }
-        all_students.append(students_dict)
-    return jsonify(all_students)
+# @app.route('/students' ,methods = ['GET'] )
+# def get_student():
+#     all_students = []
+#     for student in Student.query.all():
+#         students_dict = {
+#             "id" :student.id,
+#             "full_name" : student.full_name,
+#             "email" : student.email,
+#             "reg_number" : student.reg_number,
+#             "course" : student.course,
+#             "school" : student.school,
+#             "department" : student.department
+#         }
+#         all_students.append(students_dict)
+#     return jsonify(all_students)
 
-@app.route('/students/<int:student_id>',methods = ['GET'])
-def get_student_details(student_id):
-    student = Student.query.filter(Student.id == student_id).first()
-    if not student:
-        return(jsonify({"error" : "no student in the database with this id"}), 404)
-    student_dict = {
-        "id" :student.id,
-        "full_name" : student.full_name,
-        "email" : student.email,
-        "reg_number" : student.reg_number,
-        "course" : student.course,
-        "school" : student.school,
-        "department" : student.department
-    }
+# @app.route('/students/<int:student_id>',methods = ['GET'])
+# def get_student_details(student_id):
+#     student = Student.query.filter(Student.id == student_id).first()
+#     if not student:
+#         return(jsonify({"error" : "no student in the database with this id"}), 404)
+#     student_dict = {
+#         "id" :student.id,
+#         "full_name" : student.full_name,
+#         "email" : student.email,
+#         "reg_number" : student.reg_number,
+#         "course" : student.course,
+#         "school" : student.school,
+#         "department" : student.department
+#     }
     
-    return(jsonify(student_dict))
+#     return(jsonify(student_dict))
     
 
 

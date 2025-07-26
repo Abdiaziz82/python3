@@ -23,7 +23,18 @@ class Student(db.Model):
     
     payment = db.relationship('Payment_history',backref = 'student')
     
-
+    def to_dict(self):
+        return {
+           "id" :self.id,
+           "full_name" : self.full_name,
+           "email" : self.email,
+           "reg_number" : self.reg_number,
+           "course" : self.course,
+           "school" : self.school,
+           "department" : self.department
+            
+        }
+        
     def __repr__(self):
         return f"< Student {self.full_name} >"
     

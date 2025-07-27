@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 from models import db , Student ,Payment_history
 from flask_cors import CORS
 from flask_restful import Resource,Api
+from datetime import timedelta
 
 app = Flask(__name__)
 # Database configuration - SQLite for development
@@ -16,43 +17,90 @@ api = Api(app)
 
 
 app.secret_key = 'your_secret_key'
+app.config['SESSION_COOKIE_NAME'] = 'my_session_cookie'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SECURE'] = True  # Set to True in production with HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Adjust as needed
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)  # 1 hour
 
-@app.route('/set_name/<name>/<age>')
-def set_name(name,age):
-    session['user_name'] = name
-    session['user_age'] = age
+@app.route('/set_user/<string:name>/<string:role>')
+def set_user(name, role):
+    session.permanent = True
+    session['user_name'] = session.get('user_name', name)
+    session['user_role'] = session.get('user_role', role)
     
     response = make_response(jsonify({
-        'message':f'data saved for {name} and {age}',
-        'where_stored':{
-            'session' : f"user_name={name} and user_age={age}",
-            "cookie":"preferene=darktheme"
+        'message': f'Data saved for {name} with role {role}',
+        'where_stored': {
+            'session': f"user_name={name} and user_role={role}",
+            'cookie': 'preference=darktheme'
         }
     }))
-    response.set_cookie("preferene","darktheme")
+
+    response.set_cookie("preference", "darktheme")
     return response
 
 
-@app.route('/get_name')
-def get_name():
-    session_name = session.get('user_name')
-    session_age = session.get('user_age')
-    cookie_preference = request.cookies.get('preferene')
-    
+@app.route('/get_user')
+def get_user():
+    user_name = session.get('user_name')
+    user_role = session.get('user_role')
+    cookie_preference = request.cookies.get('preference')
+
     return jsonify({
-        'from_session':{
-            'user_name':session_name,
-            'user_age':session_age,
+        'from_session': {
+            'user_name': user_name,
+            'user_role': user_role,
             'explanation': 'from session'
-        } ,
-        'from_cookie':{
-            'user_preference':cookie_preference,
+        },
+        'from_cookie': {
+            'user_preference': cookie_preference,
             'explanation': 'from cookie'
         },
-        'all_cookies' :dict(request.cookies)
-    }
+        'all_cookies': dict(request.cookies)
+    })
+
+
+
+
+
+
+# @app.route('/set_name/<name>/<age>')
+# def set_name(name,age):
+#     session['user_name'] = name
+#     session['user_age'] = age
+    
+#     response = make_response(jsonify({
+#         'message':f'data saved for {name} and {age}',
+#         'where_stored':{
+#             'session' : f"user_name={name} and user_age={age}",
+#             "cookie":"preferene=darktheme"
+#         }
+#     }))
+#     response.set_cookie("preferene","darktheme")
+#     return response
+
+
+# @app.route('/get_name')
+# def get_name():
+#     session_name = session.get('user_name')
+#     session_age = session.get('user_age')
+#     cookie_preference = request.cookies.get('preferene')
+    
+#     return jsonify({
+#         'from_session':{
+#             'user_name':session_name,
+#             'user_age':session_age,
+#             'explanation': 'from session'
+#         } ,
+#         'from_cookie':{
+#             'user_preference':cookie_preference,
+#             'explanation': 'from cookie'
+#         },
+#         'all_cookies' :dict(request.cookies)
+#     }
         
-    )
+#     )
 
 
 
